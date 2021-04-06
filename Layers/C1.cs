@@ -1,18 +1,19 @@
 using System;
 using Structurizr;
 
-namespace modelc4_project.Layers.C1
+namespace modelc4_project
 {
     internal class C1
     {
         private Workspace _workspace;
-        private C1Builder _c1Builder;
+        private C4Builder _c1Builder;
 
         public C1(Workspace workspace) {
             _workspace = workspace;
-            _c1Builder = new C1Builder(_workspace);
+            _c1Builder = new C4Builder(_workspace);
 
             var expirationPlatformSystem = _c1Builder
+            .SelectSoftwareSystem("Expiration platform")
             .AddPerson("User", "Using platform")
             .AddPerson("Admin", "Configuring platform")
             .AddSoftwareSystem("Expiration platform", "Inform user about product expiration")
@@ -37,8 +38,7 @@ namespace modelc4_project.Layers.C1
                 Background = "#00FFFF",
                     Shape = Shape.Box,
                     FontSize = 26
-            })
-            .GetSoftwareSystem("Expiration platform");
+            }).GetSoftwareSystem("Expiration platform");
 
             var contextView = _workspace.Views.CreateSystemContextView(expirationPlatformSystem, "Expiration Platform", "description");
             contextView.PaperSize = PaperSize.A4_Landscape;

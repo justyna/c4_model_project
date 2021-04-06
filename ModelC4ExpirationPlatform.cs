@@ -1,5 +1,5 @@
 using System;
-using modelc4_project.Layers.C1;
+using modelc4_project.Layers;
 using Structurizr;
 using Structurizr.Api;
 
@@ -15,6 +15,7 @@ namespace modelc4_project
             _config = config;
             _workspace = new Workspace("Waste minimalisation system", "Add products to be inform before the expiration date");
             new C1(_workspace);
+            new C2(_workspace);
         }
         public void Publish() 
         {
