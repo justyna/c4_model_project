@@ -7,6 +7,7 @@ namespace modelc4_project
     {
         private Workspace _workspace;
         private SoftwareSystem _currentSoftwareSystem;
+        private Container _currentContainer;
 
         internal C4Builder(Workspace workspace)
         {
@@ -21,8 +22,58 @@ namespace modelc4_project
             return this;
         }
 
+        internal C4Builder AddComponent(string componentName, string componentDescription, string componentTechnology, string tag = null) {
+            var component = _currentContainer.AddComponent(componentName, componentDescription, componentTechnology);
+
+            if (!string.IsNullOrEmpty(tag)) {
+                component.AddTags(tag);
+            }
+            return this;
+        }
+
+        internal C4Builder SelectContainer(string containerName) {
+            _currentContainer = GetContainer(containerName);
+            return this;
+        }
+
         internal C4Builder SelectSoftwareSystem(string softwareSystemName) {
             _currentSoftwareSystem = GetSoftwareSystem(softwareSystemName);
+            return this;
+        }
+
+        internal C4Builder ComponentUsesComponent(string sourceComponentName, string destinationComponentName, string description, string tag) {
+            var sourceComponent = _currentContainer.GetComponentWithName(sourceComponentName);
+            var destinationComponent = _currentContainer.GetComponentWithName(destinationComponentName);
+
+            sourceComponent.Uses(destinationComponent, description).AddTags(tag);
+
+            return this;
+        }
+
+        internal C4Builder ComponentUsesContainer(string componentName, string containerName, string description, string technology) {
+            var component = _currentContainer.GetComponentWithName(componentName);
+            var container = _currentSoftwareSystem.GetContainerWithName(containerName);
+
+            component.Uses(container, description, technology);
+
+            return this;
+        }
+
+        internal C4Builder SoftwareSystemUsesComponent(string softwareSytemName, string componentName, string desc, string technology) {
+            var component = _currentContainer.GetComponentWithName(componentName);
+            var softwareSystem = _workspace.Model.GetSoftwareSystemWithName(softwareSytemName);
+
+            softwareSystem.Uses(component, desc, technology);
+
+            return this;
+        }
+
+        internal C4Builder ComponentUsesSoftwareSystem(string componentName, string softwareSystemName, string description, string technology) {
+            var component = _currentContainer.GetComponentWithName(componentName);
+            var softwareSystem = _workspace.Model.GetSoftwareSystemWithName(softwareSystemName);
+
+            component.Uses(softwareSystem, description, technology);
+
             return this;
         }
 
@@ -102,6 +153,25 @@ namespace modelc4_project
 
         internal SoftwareSystem GetSoftwareSystem(string softwareSystemName) {
             return _workspace.Model.GetSoftwareSystemWithName(softwareSystemName);
+        }
+
+        internal Container GetContainer(string containerName) {
+            return _currentSoftwareSystem.GetContainerWithName(containerName);
+        }
+
+        internal C4Builder ContainerUsesComponent(string containerName, string componentName, string description, string technology) {
+            var container = _currentSoftwareSystem.GetContainerWithName(containerName);
+            var component = _currentContainer.GetComponentWithName(componentName);
+
+            container.Uses(component, description, technology);
+
+            return this;
+        }
+        
+        internal C4Builder AddStyle(RelationshipStyle relationshipStyle) {
+            _workspace.Views.Configuration.Styles.Add(relationshipStyle);
+
+            return this;
         }
 
         internal C4Builder BuildView() {

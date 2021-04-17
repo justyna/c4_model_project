@@ -16,6 +16,7 @@ namespace modelc4_project
             _workspace = new Workspace("Waste minimalisation system", "Add products to be inform before the expiration date");
             new C1(_workspace);
             new C2(_workspace);
+            new C3(_workspace);
         }
         public void Publish() 
         {
