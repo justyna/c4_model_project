@@ -1,0 +1,59 @@
+@startuml NotificationComponent
+
+package "Notification Component" {
+
+class NotificationGenerator {
+    +generate():void
+}
+
+class NotificationSender {
+    +createNotification(Product product, Recipe recipe):Notification
+    +sendNotification(Notification):void
+}
+
+class Notification {
+
+}
+
+class RecipeProvider {
++provideRecipes(Product product):List<Recipe>
+}
+
+class Recipe {
+
+}
+
+class ProductProvider {
++provideProducts(Date: date):List<Product>
+}
+
+class Product {
+
+}
+
+class ExpirationDateRule {
+
+}
+
+class ProductTypeRule {
+
+}
+
+NotificationSender ..> NotificationGenerator
+Notification <--* NotificationSender
+NotificationGenerator <.. RecipeProvider
+Recipe <--* RecipeProvider
+NotificationGenerator <.. ProductProvider
+ProductProvider *--> Product
+Product *--> ExpirationDateRule
+Product *--> ProductTypeRule
+
+hide members
+show NotificationGenerator methods
+show NotificationSender methods
+show RecipeProvider methods
+show ProductProvider methods
+
+}
+
+@enduml

@@ -32,9 +32,12 @@ namespace modelc4_project.Layers
 
             .AddStyle(new ElementStyle(Tags.Component) {
                     Background = "#FB9D4B",
-                        Shape = Shape.Component
+                        Shape = Shape.Hexagon
                 })
                 .AddStyle(new ElementStyle("Controller") {
+                    Shape = Shape.Component
+                })
+                .AddStyle(new ElementStyle("Job") {
                     Shape = Shape.Component
                 })
                 .AddStyle(new RelationshipStyle(Tags.Relationship) {
